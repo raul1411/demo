@@ -23,6 +23,23 @@ CREATE TABLE IF NOT EXISTS movie_genre (
     genreid uuid REFERENCES genre(genreid) ON DELETE CASCADE,
     PRIMARY KEY (movieid, genreid));
 ;
+CREATE TABLE file (
+    fileid uuid NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+    contenttype TEXT,
+    data bytea
+);
+
+CREATE TABLE usser (
+    userid uuid NOT NULL DEFAULT gen_random_uuid() PRIMARY KEY,
+    username varchar(24) NOT NULL UNIQUE,
+    password varchar(255) NOT NULL,
+    role varchar(10),
+    enabled boolean DEFAULT true
+  );
+
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+INSERT INTO usser (username, password) VALUES ('user', crypt('pass', gen_salt('bf')));
+
 
 INSERT INTO movie(title, synopsis, imageurl) VALUES
     ('Movie One','This is the One Movie','movie1.jpg'),
